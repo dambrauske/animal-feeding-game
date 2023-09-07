@@ -26,9 +26,9 @@ const EggsContainer = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 bg-slate-100 w-60 h-96 rounded-xl border p-4">
+        <div className="flex flex-col gap-4 bg-slate-100 w-96 h-96 rounded-xl border p-4  overflow-y-auto">
             <div>eggs container:</div>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 items-center justify-center">
 
                 {currentAnimal.eggs && currentAnimal.eggs.map((egg, i) => (
                     <Egg

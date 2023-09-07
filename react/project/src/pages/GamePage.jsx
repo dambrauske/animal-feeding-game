@@ -96,14 +96,14 @@ const GamePage = () => {
                     <EggsContainer/>
                     <div>Money: {currentAnimal.money}</div>
                 </div>
-                <div>
-                    <div className="flex flex-col gap-4 bg-slate-100 w-60 h-96 rounded-xl border p-4">
-                        <div>food container:</div>
+                <div className={"flex-col flex gap-4 items-center p-4"}>
+                    <div className={"w-20 h-20"}>
+                        <img src="https://freeiconshop.com/wp-content/uploads/edd/food-flat.png" alt=""/>
                     </div>
                     <div>food price: 10 $</div>
                     <button
                         onClick={feedAnimal}
-                        className="bg-slate-400 py-1 px-4 rounded">feed</button>
+                        className="bg-slate-300 py-1 px-4 rounded hover:bg-indigo-400 hover:text-white">Feed</button>
                 </div>
 
             </div>
