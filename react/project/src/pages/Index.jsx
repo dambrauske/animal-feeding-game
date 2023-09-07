@@ -18,9 +18,10 @@ const Index = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:8000/getAnimals')
+        fetch('http://localhost:8000/animals')
             .then(res => res.json())
             .then(data => {
+                console.log(data)
                 dispatch(getAnimals(data.data))
             })
 
@@ -29,6 +30,19 @@ const Index = () => {
     const startGame = () => {
         if (currentAnimal) {
             navigate('/game')
+
+            const options = {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({id: currentAnimal.id})
+            }
+            fetch('http://localhost:8000/play',options)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                })
         } else {
             setError('Please select your animal')
         }
