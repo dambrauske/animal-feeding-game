@@ -1,6 +1,6 @@
 
 
-
+const userDb = require('../schemas/userSchema')
 
 
 module.exports = {
@@ -31,6 +31,28 @@ module.exports = {
         const animal = req.app.locals.animals.feedAnimal(id)
 
         res.json({error: false, data: animal, message: 'Animal fed'})
+    },
+
+    createUser: (req, res) => {
+        const newUser = {
+            username: 'Ugne',
+            city: 'Vilnius',
+            age: 30,
+        }
+
+        const user = new userDb({
+            username: newUser.username,
+            city: newUser.city,
+            age: newUser.city
+        })
+
+        user.save().then(() => {
+            console.log('user saved')
+
+            res.send({ok: 'ok'})
+        }).catch(e => {
+            console.log('error', e)
+        })
     }
 
 }

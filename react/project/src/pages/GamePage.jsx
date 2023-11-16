@@ -1,24 +1,25 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Progressbar from "../components/Progressbar.jsx";
-import {setCurrentAnimal} from "../features/gameSlice.jsx";
+import {checkIfDead, setCurrentAnimal} from "../features/gameSlice.jsx";
 import EggsContainer from "../components/EggsContainer.jsx";
 
 const GamePage = () => {
 
     const currentAnimal = useSelector(state => state.game.currentAnimal)
+    const animalDied = useSelector(state => state.game.animalDied)
     const dispatch = useDispatch()
+    const [gameOverMessage, setGameOverMessage] = useState('')
 
 
     useEffect(() => {
-
-        const options = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({id: currentAnimal.id})
+        dispatch(checkIfDead)
+        if (animalDied) {
+            return setGameOverMessage('Game Over')
         }
+    }, [currentAnimal])
+
+    useEffect(() => {
 
         console.warn('On component mount')
         const tick = setInterval(() => {
@@ -41,26 +42,23 @@ const GamePage = () => {
     }, []);
 
 
+    const feedAnimal = () => {
+        const options = {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({id: currentAnimal.id})
+        }
 
-   const feedAnimal = () => {
-       const options = {
-           method: "POST",
-           headers: {
-               "content-type": "application/json"
-           },
-           body: JSON.stringify({id: currentAnimal.id})
-       }
+        fetch('http://localhost:8000/feed', options)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.data)
+                dispatch(setCurrentAnimal(data.data))
 
-       fetch('http://localhost:8000/feed', options)
-           .then(res => res.json())
-           .then(data => {
-               console.log(data.data)
-               dispatch(setCurrentAnimal(data.data))
-
-           })
-   }
-
-
+            })
+    }
 
 
     return (
@@ -72,16 +70,16 @@ const GamePage = () => {
                     </div>
                 </div>
 
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-col gap-2 items-center">
                     <div>
-
+                        HR:
                     </div>
                     <Progressbar
                         width={currentAnimal.hunger}/>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-col gap-2 items-center">
                     <div>
-
+                    Egg progress:
                     </div>
                     <Progressbar
                         width={currentAnimal.eggProgress}
@@ -103,7 +101,9 @@ const GamePage = () => {
                     <div>food price: 10 $</div>
                     <button
                         onClick={feedAnimal}
-                        className="bg-slate-300 py-1 px-4 rounded hover:bg-indigo-400 hover:text-white">Feed</button>
+                        className="bg-slate-300 py-1 px-4 rounded hover:bg-indigo-400 hover:text-white">Feed
+                    </button>
+                    <div>{gameOverMessage}</div>
                 </div>
 
             </div>

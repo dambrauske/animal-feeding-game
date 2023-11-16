@@ -5,6 +5,7 @@ export const gameSlice = createSlice({
     initialState: {
         animals: [],
         currentAnimal: undefined,
+        animalDied: false,
     },
     reducers: {
         setCurrentAnimal: (state, action) => {
@@ -12,11 +13,16 @@ export const gameSlice = createSlice({
         },
         getAnimals: (state, action) => {
             state.animals = action.payload
-        }
+        },
+        checkIfDead: (state) => {
+            if (state.currentAnimal.hunger <= 0) {
+                state.animalDied = true
+            }
+    }
     }
 })
 
-export const {setCurrentAnimal, getAnimals} = gameSlice.actions
+export const {setCurrentAnimal, checkIfDead, getAnimals} = gameSlice.actions
 
 export default gameSlice.reducer;
 

@@ -7,6 +7,7 @@ const {
     playWithAnimal,
     sellEgg,
     feedAnimal,
+    createUser
 } = require('../controllers/mainController')
 
 
@@ -15,5 +16,7 @@ router.post('/play', playWithAnimal)
 router.get('/animal/:id', getAnimal)
 router.post('/feed', feedAnimal)
 router.post('/sellEgg', sellEgg)
+
+router.get('addUser', createUser)
 
 module.exports = router
